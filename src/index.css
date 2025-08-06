@@ -40,3 +40,15 @@ button {
     cursor: pointer;
     margin-top: 20px;
 }
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007cba;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 150px;
+}

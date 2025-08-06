@@ -59,6 +59,9 @@ function App() {
   const specializzazioneRef = useRef();
   const anniDiEsperienzaRef = useRef();
 
+  // useRef per il form per lo scroll
+  const formRef = useRef();
+
   const letters = "abcdefghijklmnopqrstuvwxyz";
   const numbers = "0123456789";
   const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
@@ -126,11 +129,21 @@ function App() {
     });
   }
 
+  const resetForm = (e) => {
+    e.preventDefault();
+    nomeRef.current.value = '';
+    specializzazioneRef.current.value = '';
+    anniDiEsperienzaRef.current.value = '';
+    setUsername('');
+    setPassword('');
+    setDescrizione('');
+  }
+
 
   return (
     <>
       <h1>Form di Registrazione</h1>
-      <form action="">
+      <form ref={formRef} action="">
         <section>
           <label htmlFor="nome">Nome Completo:</label>
           <input type="text"
@@ -176,7 +189,12 @@ function App() {
           />
         </section>
         <button onClick={handleSubmit}>Registrati</button>
+        <button onClick={resetForm}>Reset Form</button>
       </form>
+      <footer style={{ height: '100vh' }}>
+        <button className='scroll-to-top'
+          onClick={() => { formRef.current.scrollIntoView({ behavior: 'smooth' }) }}>Torna su</button>
+      </footer>
     </>
   )
 }
