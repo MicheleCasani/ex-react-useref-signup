@@ -21,6 +21,20 @@
 // La Specializzazione sia selezionata
 
 // Al submit, se il form è valido, stampa in console i dati.
+
+// --------------------------------------------------------------
+
+//  Milestone 2: Validare in tempo reale
+// Aggiungere la validazione in tempo reale dei seguenti campi:
+
+// ✅ Username: Deve contenere solo caratteri alfanumerici e almeno 6 caratteri (no spazi o simboli).
+
+// ✅ Password: Deve contenere almeno 8 caratteri, 1 lettera, 1 numero e 1 simbolo.
+
+// ✅ Descrizione: Deve contenere tra 100 e 1000 caratteri (senza spazi iniziali e finali).
+
+// Suggerimento: Per semplificare la validazione, puoi definire tre stringhe con i caratteri validi e usare .includes() per controllare se i caratteri appartengono a una di queste categorie:
+
 import { useState } from 'react'
 
 
@@ -33,6 +47,10 @@ function App() {
   const [anniDiEsperienza, setAnniDiEsperienza] = useState('')
   const [descrizione, setDescrizione] = useState('')
 
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!nome || !username || !password || !specializzazione || !anniDiEsperienza || !descrizione) {
@@ -43,6 +61,48 @@ function App() {
       alert('Gli anni di esperienza devono essere un numero positivo');
       return;
     }
+
+    // controllo username
+    let hasInvalidChar = false;
+    for (let char of username) {
+      if (symbols.includes(char) || char === ' ') {
+        hasInvalidChar = true;
+        break;
+      }
+    }
+
+    if (username.length < 6 || hasInvalidChar) {
+      alert('Lo username deve contenere almeno 6 caratteri e deve essere alfanumerico');
+      return;
+    }
+
+    // controllo password
+    let hasLetter = false;
+    let hasNumber = false;
+    let hasSymbol = false;
+    for (let char of password) {
+      if (letters.includes(char)) {
+        hasLetter = true;
+      } else if (numbers.includes(char)) {
+        hasNumber = true;
+      } else if (symbols.includes(char)) {
+        hasSymbol = true;
+      }
+    }
+    if (password.length < 8 || !hasLetter || !hasNumber || !hasSymbol) {
+      alert('La password deve contenere almeno 8 caratteri, 1 lettera, 1 numero e 1 simbolo');
+      return;
+    }
+
+    // controllo descrizione
+    if (descrizione.trim().length < 100 || descrizione.trim().length > 1000) {
+      alert('La descrizione deve contenere tra 100 e 1000 caratteri (senza spazi iniziali e finali)');
+      return;
+    }
+
+    // Se tutto è valido, stampa i dati in console
+
+
 
     console.log({
       nome,
