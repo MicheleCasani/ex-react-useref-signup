@@ -35,17 +35,29 @@
 
 // Suggerimento: Per semplificare la validazione, puoi definire tre stringhe con i caratteri validi e usare .includes() per controllare se i caratteri appartengono a una di queste categorie:
 
-import { useState } from 'react'
+// -----------------------------------------------------------------
+
+//  Milestone 3: Convertire i Campi Non Controllati
+// Non tutti i campi del form necessitano di essere aggiornati a ogni carattere digitato. Alcuni di essi non influenzano direttamente l’interfaccia mentre l’utente li compila, quindi è possibile gestirli in modo più efficiente.
+
+// Analizza il form: Identifica quali campi devono rimanere controllati e quali invece possono essere non controllati senza impattare l’esperienza utente.
+// Converti i campi non controllati: Usa useRef() per gestirli e recuperare il loro valore solo al momento del submit.
+// Assicurati che la validazione continui a funzionare: Anche se un campo non è controllato, deve comunque essere validato correttamente quando l’utente invia il form.
+
+import { useState, useRef } from 'react'
 
 
 function App() {
 
-  const [nome, setNome] = useState('')
+  // mantengo i campi controllati utilizzando useState
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [specializzazione, setSpecializzazione] = useState('')
-  const [anniDiEsperienza, setAnniDiEsperienza] = useState('')
   const [descrizione, setDescrizione] = useState('')
+
+  // utilizzo useRef per i campi non controllati
+  const nomeRef = useRef();
+  const specializzazioneRef = useRef();
+  const anniDiEsperienzaRef = useRef();
 
   const letters = "abcdefghijklmnopqrstuvwxyz";
   const numbers = "0123456789";
@@ -53,11 +65,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!nome || !username || !password || !specializzazione || !anniDiEsperienza || !descrizione) {
+    if (!nomeRef.current.value || !username || !password || !specializzazioneRef.current.value || !anniDiEsperienzaRef.current.value || !descrizione) {
       alert('Tutti i campi devono essere compilati');
       return;
     }
-    if (anniDiEsperienza <= 0) {
+    if (anniDiEsperienzaRef.current.value <= 0) {
       alert('Gli anni di esperienza devono essere un numero positivo');
       return;
     }
@@ -105,11 +117,11 @@ function App() {
 
 
     console.log({
-      nome,
+      nome: nomeRef.current.value,
       username,
       password,
-      specializzazione,
-      anniDiEsperienza,
+      specializzazione: specializzazioneRef.current.value,
+      anniDiEsperienza: anniDiEsperienzaRef.current.value,
       descrizione
     });
   }
@@ -122,8 +134,7 @@ function App() {
         <section>
           <label htmlFor="nome">Nome Completo:</label>
           <input type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+            ref={nomeRef}
           />
         </section>
         <section>
@@ -143,8 +154,7 @@ function App() {
         <section>
           <label htmlFor="Specializzazione">Specializzazione:</label>
           <select
-            value={specializzazione}
-            onChange={(e) => setSpecializzazione(e.target.value)}
+            ref={specializzazioneRef}
           >
             <option value="">Seleziona</option>
             <option value="Full Stack">Full Stack</option>
@@ -155,8 +165,7 @@ function App() {
         <section>
           <label htmlFor="anni di esperienza">Anni di Esperienza:</label>
           <input type="number"
-            value={anniDiEsperienza}
-            onChange={(e) => setAnniDiEsperienza(e.target.value)}
+            ref={anniDiEsperienzaRef}
           />
         </section>
         <section>
